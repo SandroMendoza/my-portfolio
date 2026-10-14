@@ -51,3 +51,11 @@ export function DownloadIcon(props: IconProps) {
     </BaseIcon>
   );
 }
+
+export function ChevronDownIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M6 9l6 6 6-6" />
+    </BaseIcon>
+  );
+}

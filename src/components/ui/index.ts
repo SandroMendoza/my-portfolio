@@ -6,4 +6,4 @@ export { SectionHeading } from "./SectionHeading";
 export type { SectionHeadingProps } from "./SectionHeading";
 export { CondensedListRow } from "./CondensedListRow";
 export type { CondensedListRowProps } from "./CondensedListRow";
-export { MenuIcon, CloseIcon, DownloadIcon } from "./icons";
+export { MenuIcon, CloseIcon, DownloadIcon, ChevronDownIcon } from "./icons";

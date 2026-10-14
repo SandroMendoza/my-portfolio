@@ -64,6 +64,17 @@ export default {
         body: ["1rem", { lineHeight: "1.6" }], // 16px, same both breakpoints
         meta: ["0.8125rem", { lineHeight: "1.4" }], // 13px mobile
         "meta-lg": ["0.875rem", { lineHeight: "1.4" }], // 14px desktop
+        // Added in MP-3: spec §3 (Hero) names a "Subheading (body-large,
+        // 20px/18px, text-secondary)" size that isn't in §1's master type
+        // scale table (which only lists H1/H2/H3/Body/Meta) — same gap
+        // pattern as the Chip 6px padding and Nav's 768px breakpoint, both
+        // since reconciled into §1 by KC. Flagging this one the same way
+        // rather than silently inventing or reusing an existing token: H3 is
+        // the same 20/18 pixel size but a different weight (600, a heading)
+        // and this is 400 (a lead paragraph), so reusing h3/h3-lg would tie
+        // an unrelated heading token to body-weight text by coincidence.
+        subhead: ["1.125rem", { lineHeight: "1.5" }], // 18px mobile
+        "subhead-lg": ["1.25rem", { lineHeight: "1.4" }], // 20px desktop
       },
       // Spacing scale per spec is 4/8/12/16/24/32/48/64/96px, which are
       // exactly Tailwind's default 1/2/3/4/6/8/12/16/24 units — no override
