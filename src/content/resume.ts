@@ -5,9 +5,13 @@ import type { ResumeContent } from "./types";
 // Keep this the single source of truth; components must import from here,
 // never hardcode resume content inline in JSX (docs/architecture/rules.md).
 export const resumeContent: ResumeContent = {
+  // Hero (MP-3): approved copy is "Sandro Mendoza — Backend Developer ·
+  // Kotlin & Spring Boot", split at the em dash into name (H1) + headline
+  // (subheading) per KC's decision (screen-specs.md §3) — same approved
+  // words, no new copy added.
   hero: {
-    name: "",
-    headline: "",
+    name: "Sandro Mendoza",
+    headline: "Backend Developer · Kotlin & Spring Boot",
     resumeFileHref: "/resume/Sandro-Mendoza-Resume.pdf",
   },
   about: {
@@ -18,7 +22,11 @@ export const resumeContent: ResumeContent = {
   projects: [],
   otherExperience: [],
   education: [],
+  // Filled in now (MP-3) rather than waiting for the Contact ticket (MP-10):
+  // Hero's resume-fallback message also needs this same approved address
+  // (screen-specs.md §3 States), and ADR 0004 says content lives here once,
+  // not duplicated/hardcoded per component.
   contact: {
-    email: "",
+    email: "sandro.p.mendoza@gmail.com",
   },
 };
