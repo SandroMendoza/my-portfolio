@@ -137,19 +137,24 @@ export function Nav() {
         <div className="mx-auto flex h-16 max-w-content items-center justify-between gap-4 px-6 md:px-8 lg:px-16">
           <a
             href={`#${HERO_ID}`}
-            className="text-body font-semibold text-text-primary hover:text-accent"
+            className="flex min-h-[44px] items-center whitespace-nowrap text-body font-semibold text-text-primary hover:text-accent"
           >
             Sandro Mendoza
           </a>
 
           <nav aria-label="Section" className="hidden min-[768px]:block">
-            <ul className="flex items-center gap-6">
+            {/* MP-12 fix: gap tightens (and link text drops to the smaller
+                "meta" token) only below `lg`, where all 7 full labels plus
+                the wordmark and button don't otherwise fit on one line
+                without wrapping (confirmed at 768-830px). At `lg`+ this
+                reverts to the original roomier spacing/size. */}
+            <ul className="flex items-center gap-2 lg:gap-6">
               {NAV_LINKS.map((link) => (
                 <li key={link.id}>
                   <a
                     href={`#${link.id}`}
                     aria-current={activeId === link.id ? "true" : undefined}
-                    className="text-meta-lg font-medium text-text-secondary hover:text-accent aria-[current=true]:text-accent aria-[current=true]:underline"
+                    className="flex min-h-[44px] items-center whitespace-nowrap text-meta font-medium text-text-secondary hover:text-accent aria-[current=true]:text-accent aria-[current=true]:underline lg:text-meta-lg"
                   >
                     {link.label}
                   </a>
@@ -159,13 +164,15 @@ export function Nav() {
           </nav>
 
           <div className="hidden min-[768px]:block">
+            {/* Full Button/Primary anatomy (48px min height, 24px horizontal
+                padding — spec §1) is kept as-is here; "compact" only means
+                hiding the label below `lg`, not shrinking the button itself. */}
             <Button
               as="a"
               variant="primary"
               href={resumeContent.hero.resumeFileHref}
               download
               icon={<DownloadIcon className="h-4 w-4" />}
-              className="min-h-[44px] px-4 text-meta-lg"
               aria-label={RESUME_ARIA_LABEL}
             >
               <span className="hidden lg:inline">Download Resume</span>

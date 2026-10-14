@@ -99,4 +99,54 @@ describe("Nav", () => {
     expect(hamburger).toHaveClass("min-h-[44px]");
     expect(hamburger).toHaveClass("min-w-[44px]");
   });
+
+  // MP-12/MP-13 regression coverage. jsdom doesn't do real layout, so these
+  // assert the utility classes the live-browser fix (verified with Playwright
+  // at 768-1440px, see PR #8) depends on, rather than actual pixel wrapping —
+  // that's Potchie's browser-based QA territory per ADR 0005.
+  describe("MP-12/MP-13: no text-wrap and 44px-tall tap targets on the inline bar", () => {
+    it("wordmark never wraps and meets the 44px height minimum", () => {
+      render(<Nav />);
+      const wordmark = screen.getByRole("link", { name: "Sandro Mendoza" });
+      expect(wordmark).toHaveClass("whitespace-nowrap");
+      expect(wordmark).toHaveClass("min-h-[44px]");
+      expect(wordmark).toHaveClass("items-center");
+    });
+
+    it("every inline jump link never wraps and meets the 44px height minimum", () => {
+      render(<Nav />);
+      const nav = screen.getByRole("navigation", { name: "Section" });
+      within(nav)
+        .getAllByRole("link")
+        .forEach((link) => {
+          expect(link).toHaveClass("whitespace-nowrap");
+          expect(link).toHaveClass("min-h-[44px]");
+          expect(link).toHaveClass("items-center");
+        });
+    });
+
+    it("the jump-link row tightens its gap below `lg`, where all 7 labels don't otherwise fit on one line", () => {
+      render(<Nav />);
+      const nav = screen.getByRole("navigation", { name: "Section" });
+      const list = within(nav).getAllByRole("link")[0].closest("ul");
+      expect(list).toHaveClass("gap-2");
+      expect(list).toHaveClass("lg:gap-6");
+    });
+
+    it("the compact Download Resume button keeps Button/Primary's full spec'd anatomy (not shrunk)", () => {
+      render(<Nav />);
+      const resumeLinks = screen.getAllByRole("link", {
+        name: "Download Sandro Mendoza's resume (PDF)",
+      });
+      // The inline-bar instance (first) must rely on Button's own base
+      // min-h-[48px]/px-6 rather than a shrunk override — MP-12's earlier fix
+      // attempt overrode these to min-h-[44px]/px-4, which both silently
+      // conflicted with Button's base classes and violated the Button/Primary
+      // anatomy spec'd in MP-1.
+      expect(resumeLinks[0]).toHaveClass("min-h-[48px]");
+      expect(resumeLinks[0]).toHaveClass("px-6");
+      expect(resumeLinks[0]).not.toHaveClass("min-h-[44px]");
+      expect(resumeLinks[0]).not.toHaveClass("px-4");
+    });
+  });
 });
