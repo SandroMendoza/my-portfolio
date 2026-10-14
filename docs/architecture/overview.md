@@ -84,6 +84,9 @@ my-portfolio/
       types.ts
       resume.ts          # skills, experience, projects, education, contact data
     components/
+      ui/                 # shared cross-section primitives (added MP-1):
+                          # Button, Chip, SectionHeading, CondensedListRow
+      Nav/
       Hero/
       About/
       Skills/
@@ -94,8 +97,12 @@ my-portfolio/
       Contact/
     styles/
       global.css          # Tailwind directives
+  design/
+    screen-specs.md        # KC's approved screen spec (copied in post-MP-1)
   docs/
     architecture/         # copied in at Repository stage (this folder)
+    operations/
+      deployment.md        # Yuki's deploy runbook
   .github/
     workflows/
       ci-cd.yml
@@ -106,6 +113,8 @@ my-portfolio/
   package.json
   README.md
 ```
+
+`src/components/ui/` holds components shared across multiple sections (e.g. the Button/Chip/SectionHeading/CondensedListRow primitives KC's design spec calls out in §1). The "one component per section" guideline in rules.md is about the 8 page-section components, not these shared primitives — reviewed and approved during the MP-1 PR review (see ADR context in that PR).
 
 No `backend/` folder exists in this repo — see ADR 0001.
 
