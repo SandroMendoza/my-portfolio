@@ -14,6 +14,7 @@ Every developer on this project reads this file. Firm rules must be followed; gu
 8. **No analytics or tracking scripts** (Discovery: explicitly out of scope).
 9. **All section content** (skills, experience, projects, education, contact) lives in `src/content/*.ts`, typed via `src/content/types.ts`. Components read from there — never hardcode resume content inline in JSX. (ADR 0004)
 10. **CI must pass before merge.** GitHub Actions runs `npm run test` and `npm run build` on every pull request.
+11. **One git worktree per concurrent agent session.** Never work directly in the shared root clone, and never share a worktree with another concurrent session — a plain shared working directory lets one session's `git checkout` silently rewrite another session's files and checked-out branch mid-task, which has already produced wrong QA results once. Repo-global git operations (`git worktree prune`, `git gc`, editing `.git/config`) happen once from the canonical clone, coordinated with Yuki. (ADR 0006)
 
 ## Guidelines
 
