@@ -14,8 +14,10 @@ export const resumeContent: ResumeContent = {
     headline: "Backend Developer · Kotlin & Spring Boot",
     resumeFileHref: "/resume/Sandro-Mendoza-Resume.pdf",
   },
+  // About (MP-4): exact verbatim copy from the Product Overview
+  // (design/screen-specs.md §4 "Copy (exact, verbatim from Product Overview)").
   about: {
-    body: "",
+    body: "I'm a backend developer with hands-on experience building scalable systems using Kotlin, Spring Boot, and Domain-Driven Design. Before moving into software development, I spent several years in IT support, QA, and customer service — so reliability, attention to detail, and clear communication are second nature to me.",
   },
   skills: [],
   experience: [],
