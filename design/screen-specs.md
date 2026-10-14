@@ -4,6 +4,8 @@ Designer: KC · Stage: Design · Status: **Approved by Sandro** (2026-10-14) —
 Source of truth: Notion — [Product Overview](https://app.notion.com/p/3f92582d747381c18931d32efc33a522) + 8 user stories under the [My Portfolio hub](https://app.notion.com/p/3f92582d74738177bc75fe33f4986982).
 Architecture reference: `docs/architecture/overview.md` + `rules.md` (Dragon) — React + Vite + TypeScript + Tailwind CSS, one component per section, no animation library.
 
+**Revision note (2026-10-14, post-MP-1):** Dragon flagged that §1's Chip/Pill padding (6px/12px) wasn't on the general spacing scale list. Resolved by documenting 6px as a named micro-spacing exception for compact inline components, rather than changing the already-built, already-approved Chip component — no code change needed. See §1.
+
 This is a single scrolling page. "Screens" below = sections in fixed order: **Hero → About → Skills → Experience → Projects → Other Experience → Education & Certifications → Contact**, each specified at mobile / tablet / desktop. Figma frames should be named `Portfolio / 01 Hero`, `Portfolio / 02 About`, etc., one page per breakpoint group or one frame per breakpoint per section (`01 Hero — Desktop`, `01 Hero — Mobile`, …) — until the Figma upgrade lands, this document is the spec of record.
 
 ---
@@ -60,7 +62,8 @@ All text/background pairs above meet WCAG AA (4.5:1 body text, 3:1 large text/UI
   - Meta/small (dates, captions, chips): 14px / 13px, 500
 - Body paragraphs max-width ~70ch.
 
-**Spacing scale:** 4, 8, 12, 16, 24, 32, 48, 64, 96 (px) — use for all padding/margin/gap.
+**Spacing scale (primary):** 4, 8, 12, 16, 24, 32, 48, 64, 96 (px) — use for all layout padding/margin/gap.
+**Spacing scale (micro-spacing exception):** 6px — reserved only for compact inline components where 4px reads too tight and 8px reads too loose at 14px text (currently: Chip/Pill vertical padding, below). Don't use 6px for layout spacing — the primary scale above covers that.
 
 **Radius:** 8px (cards, buttons), 999px (pills/chips)
 
@@ -77,7 +80,7 @@ All text/background pairs above meet WCAG AA (4.5:1 body text, 3:1 large text/UI
 **Shared components**
 - **Button/Primary** — accent bg, white text, 8px radius, 48px min height, 24px horizontal padding, icon + label.
 - **Button/Secondary (ghost)** — transparent bg, accent text + 1px accent border.
-- **Chip/Pill** — `accent-tint` bg, accent (darkened for contrast, `#1E40AF`) text, 6px/12px padding, pill radius, 14px.
+- **Chip/Pill** — `accent-tint` bg, accent (darkened for contrast, `#1E40AF`) text, 6px/12px padding (6px = the micro-spacing exception noted above, intentional, not a typo), pill radius, 14px.
 - **Section heading** — H2 + optional 4px accent underline/rule, 64px top margin from previous section.
 - **Condensed list row** (used by Other Experience + Education) — title (body, 600) + company (text-secondary) left, dates (text-secondary, 14px) right on desktop, stacked on mobile, 1px `border` divider between rows.
 
