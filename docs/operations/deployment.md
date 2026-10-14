@@ -8,6 +8,7 @@ Reference this whenever you need to deploy, roll back, or understand what the CI
 
 - Access: a GitHub account with write access to `SandroMendoza/my-portfolio`.
 - No local Cloudflare login is needed for normal deploys — CI holds the credentials. `wrangler` is only used locally for one-off checks (e.g. `npx wrangler deployments list --env production`), which requires `wrangler login` or a local `CLOUDFLARE_API_TOKEN` env var.
+- Work from your own git worktree, not the shared clone — see `docs/operations/working-in-parallel.md` before running any git commands here.
 
 ## How deployment works
 
