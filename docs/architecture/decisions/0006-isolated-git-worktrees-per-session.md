@@ -1,7 +1,7 @@
 # 0006 — Isolate concurrent agent sessions with one git worktree per session
 
 **Date**: 2026-10-14
-**Status**: Proposed
+**Status**: Accepted (2026-10-14)
 
 ## Context
 
