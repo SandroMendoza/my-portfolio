@@ -6,6 +6,8 @@ Architecture reference: `docs/architecture/overview.md` + `rules.md` (Dragon) �
 
 **Revision note (2026-10-14, post-MP-1):** Dragon flagged that §1's Chip/Pill padding (6px/12px) wasn't on the general spacing scale list. Resolved by documenting 6px as a named micro-spacing exception for compact inline components, rather than changing the already-built, already-approved Chip component — no code change needed. See §1.
 
+**Revision note (2026-10-14, post-MP-2):** Dragon flagged that §2's Nav collapse point (768px) didn't match MP-1's `md`(640px)/`lg`(1024px) breakpoint tokens. Same resolution pattern as the Chip case — documented 768px as a named per-component breakpoint exception (Nav collapse only) in §1, rather than changing the already-built, already-approved Nav. No code change needed. See §1.
+
 This is a single scrolling page. "Screens" below = sections in fixed order: **Hero → About → Skills → Experience → Projects → Other Experience → Education & Certifications → Contact**, each specified at mobile / tablet / desktop. Figma frames should be named `Portfolio / 01 Hero`, `Portfolio / 02 About`, etc., one page per breakpoint group or one frame per breakpoint per section (`01 Hero — Desktop`, `01 Hero — Mobile`, …) — until the Figma upgrade lands, this document is the spec of record.
 
 ---
@@ -28,10 +30,12 @@ A fourth, smaller call: the **Contact** section uses a dark, full-bleed closing 
 
 Named so they map directly to Tailwind config (`tailwind.config.ts`) for Rose.
 
-**Breakpoints**
+**Breakpoints (primary):** use these for all section/layout responsiveness.
 - `mobile`: 360–639px (default/no prefix in Tailwind)
 - `md` (tablet): 640–1023px
 - `lg` (desktop): 1024px+ · content max-width 1120px, centered, side padding 24px (mobile) / 32px (tablet) / 64px (desktop)
+
+**Breakpoints (per-component exception):** 768px — reserved for the sticky Nav's collapse point only (§2). The inline bar (wordmark + 7 jump links + Download Resume button) needs more horizontal room than the primary `md` breakpoint allows before it collapses to the hamburger menu. Implement as an arbitrary Tailwind value (`min-[768px]:`), not a new named breakpoint — don't reuse 768px for other components without adding it here first.
 
 **Color**
 | Token | Hex | Use |
@@ -93,7 +97,7 @@ All text/background pairs above meet WCAG AA (4.5:1 body text, 3:1 large text/UI
 **Related requirements:** Supports Discovery goal ("clear impression in under 2 minutes") and Hero story's Download Resume must-have (#2/#3). Not an explicit requirement itself — see decision #2 above.
 
 **Layout**
-- Desktop/tablet (≥768px): fixed top bar, 64px height, `surface-base` bg, 1px bottom `border`. Left: "Sandro Mendoza" wordmark (16px, 600) — click scrolls to top. Center/right: text jump links — About, Skills, Experience, Projects, Other Experience, Education, Contact (small, 14px, text-secondary, accent on hover/active-section). Far right: compact "Download Resume" primary button (icon-only + tooltip on tablet if space is tight, full label on desktop).
+- Desktop/tablet (≥768px — a named per-component breakpoint exception, see §1): fixed top bar, 64px height, `surface-base` bg, 1px bottom `border`. Left: "Sandro Mendoza" wordmark (16px, 600) — click scrolls to top. Center/right: text jump links — About, Skills, Experience, Projects, Other Experience, Education, Contact (small, 14px, text-secondary, accent on hover/active-section). Far right: compact "Download Resume" primary button (icon-only + tooltip on tablet if space is tight, full label on desktop).
 - Mobile (<768px): same bar, wordmark left, jump links collapse into a hamburger icon (right), Download Resume button hidden from the bar itself (it's already visible in Hero one scroll away) — hamburger opens a full-height overlay menu listing all 7 jump links + a Download Resume button at the bottom.
 - Bar gains the resting shadow token once the page scrolls past the Hero section (subtle elevation cue).
 
