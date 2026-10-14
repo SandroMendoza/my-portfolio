@@ -147,7 +147,19 @@ export function Nav() {
                 "meta" token) only below `lg`, where all 7 full labels plus
                 the wordmark and button don't otherwise fit on one line
                 without wrapping (confirmed at 768-830px). At `lg`+ this
-                reverts to the original roomier spacing/size. */}
+                reverts to the original roomier spacing/size.
+
+                MP-13 (per Gellie/KC's decision, see MP-13 comments): these
+                links are 24x24 (WCAG 2.2 SC 2.5.8 AA), not 44x44, satisfied
+                via the Spacing exception rather than forcing each short
+                label's width out to 44px (which would re-break the MP-12
+                fit above). That exception requires a 24px-diameter circle
+                centered on each link not to overlap its neighbor's — i.e.
+                center-to-center distance >=24px. Verified via Playwright at
+                768px and 1023px (gap-2's tightest range): the closest pair
+                ("About"->"Skills") measures ~41px center-to-center, ~1.7x
+                the minimum. Don't shrink `gap-2` below this without
+                re-measuring — it's what keeps the exception valid. */}
             <ul className="flex items-center gap-2 lg:gap-6">
               {NAV_LINKS.map((link) => (
                 <li key={link.id}>
