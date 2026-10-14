@@ -138,10 +138,11 @@ No `backend/` folder exists in this repo — see ADR 0001.
 
 ## Decisions
 
-See `docs/architecture/decisions/` for full reasoning. All five are **Accepted** (2026-10-14).
+See `docs/architecture/decisions/` for full reasoning. 0001–0005 are **Accepted** (2026-10-14); 0006 is **Proposed**, pending Sandro's acceptance.
 
 - 0001 — Static site, no backend or database
 - 0002 — Frontend stack: React + Vite + TypeScript + Tailwind CSS
 - 0003 — Hosting: Cloudflare Workers static assets (dev/prod environments) + GitHub Actions CI/CD
 - 0004 — Content stored as typed data modules, no CMS
 - 0005 — Testing: Vitest + React Testing Library
+- 0006 — Isolate concurrent agent sessions with one git worktree per session (Proposed)
