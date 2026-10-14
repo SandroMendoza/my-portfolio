@@ -31,11 +31,11 @@ export function CondensedListRow({
         <span className="text-body font-semibold text-text-primary">
           {title}
         </span>
-        <span className="text-meta text-text-secondary lg:text-meta-lg">
+        <span className="text-meta font-medium text-text-secondary lg:text-meta-lg">
           {subtitle}
         </span>
       </div>
-      <span className="text-meta text-text-secondary md:shrink-0 md:pl-4 md:text-right lg:text-meta-lg">
+      <span className="text-meta font-medium text-text-secondary md:shrink-0 md:pl-4 md:text-right lg:text-meta-lg">
         {dateRange}
       </span>
     </li>

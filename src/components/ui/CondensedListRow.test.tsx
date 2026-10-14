@@ -38,4 +38,17 @@ describe("CondensedListRow", () => {
     );
     expect(screen.getByRole("listitem")).not.toHaveClass("border-b");
   });
+
+  // MP-11: subtitle/date-range were rendering at the browser default weight
+  // (400) instead of the spec's "Meta/small ... 500" (screen-specs.md §1
+  // Typography) because font-medium was missing from both spans.
+  it("renders the subtitle and date range at meta weight 500 (font-medium)", () => {
+    render(
+      <ul>
+        <CondensedListRow title="A" subtitle="B" dateRange="C" />
+      </ul>,
+    );
+    expect(screen.getByText("B")).toHaveClass("font-medium");
+    expect(screen.getByText("C")).toHaveClass("font-medium");
+  });
 });
