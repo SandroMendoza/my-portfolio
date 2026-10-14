@@ -2,7 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Shared design tokens (colors, type scale, spacing) land in tailwind.config.ts
+/* Shared design tokens (colors, type scale, spacing) live in tailwind.config.ts
    under theme.extend, per KC's approved design-token system (ticket MP-1).
    Keep section-specific styling in Tailwind utility classes on components —
-   see docs/architecture/rules.md. */
+   see docs/architecture/rules.md. The handful of rules below are the few
+   things Tailwind utility classes can't express per-element (global
+   focus-visible ring, honoring prefers-reduced-motion, sticky-nav scroll
+   offset) so they live once, here, instead of being repeated per component. */
+
+@layer base {
+  html {
+    font-family: theme("fontFamily.sans");
+    /* Sticky nav is 64px tall; without this, an anchor-jumped-to heading
+       lands underneath the fixed bar (spec §2). */
+    scroll-padding-top: 4rem;
+  }
+
+  body {
+    @apply bg-surface-base text-text-primary;
+  }
+
+  /* Visible only via :focus-visible (not plain :focus), 2px solid accent,
+     2px offset, on every focusable element — spec §1 "Focus state". */
+  :focus-visible {
+    outline: 2px solid theme("colors.accent");
+    outline-offset: 2px;
+  }
+
+  /* Contact section sits on `surface-dark`; the base accent ring doesn't have
+     enough contrast there, so it's swapped via this class (spec §1 and §10). */
+  .focus-ring-on-dark:focus-visible {
+    outline-color: theme("colors.focus-ring-dark");
+  }
+}
+
+/* Respect prefers-reduced-motion: reduce — disable all CSS transitions,
+   animations, and smooth scrolling, snapping to the end state instantly
+   (spec §1 "Motion"). This is a blanket rule so individual components don't
+   each need to re-implement it. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
