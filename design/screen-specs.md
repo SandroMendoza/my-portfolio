@@ -8,6 +8,10 @@ Architecture reference: `docs/architecture/overview.md` + `rules.md` (Dragon) �
 
 **Revision note (2026-10-14, post-MP-2):** Dragon flagged that §2's Nav collapse point (768px) didn't match MP-1's `md`(640px)/`lg`(1024px) breakpoint tokens. Same resolution pattern as the Chip case — documented 768px as a named per-component breakpoint exception (Nav collapse only) in §1, rather than changing the already-built, already-approved Nav. No code change needed. See §1.
 
+**Revision note (2026-10-15, post-MP-13, KC concurs):** My original §2 accessibility note ("all tap targets ≥44×44px") was general best-practice guidance, not a deliberate call to hold short inline nav links to a stricter-than-AA bar — and 44×44 is actually the WCAG 2.2 AAA target (SC 2.5.5), not the AA minimum. Rose's MP-13 fix couldn't force the 7 short jump links (e.g. "About", ~37px wide) to 44px width without re-breaking MP-12's 768px text-wrap fix. Gellie resolved it: discrete button-style targets keep ≥44×44px (no cost to keeping the higher bar there); the 7 inline jump links drop to the WCAG 2.2 SC 2.5.8 AA minimum (24×24px) via the **Spacing** exception, conditional on adjacent-link gap verification (new testable AC on the Sticky Navigation story). I agree with this reading — it correctly separates the AAA target size from the AA minimum, and Spacing is the right-fit exception for a row of discrete links (not the "inline text" exception). Full history: [Sticky Navigation story](https://app.notion.com/p/3f92582d7473818c9d1fd55baf53262f), Jira MP-13.
+
+**Revision note (2026-10-15, post-MP-3):** Dragon flagged that §3's Hero subheading ("body-large, 20px/18px, text-secondary") had no matching entry in §1's type-scale table. Same resolution pattern as the Chip and Nav-breakpoint cases — added named `subhead`/`subhead-lg` tokens to §1, distinct from `h3`/`h3-lg` despite the matching pixel size (different weight, different semantic role: lead paragraph vs. heading), rather than changing Rose's already-built, already-approved MP-3 implementation. No code change needed. See §1.
+
 This is a single scrolling page. "Screens" below = sections in fixed order: **Hero → About → Skills → Experience → Projects → Other Experience → Education & Certifications → Contact**, each specified at mobile / tablet / desktop. Figma frames should be named `Portfolio / 01 Hero`, `Portfolio / 02 About`, etc., one page per breakpoint group or one frame per breakpoint per section (`01 Hero — Desktop`, `01 Hero — Mobile`, …) — until the Figma upgrade lands, this document is the spec of record.
 
 ---
@@ -60,6 +64,7 @@ All text/background pairs above meet WCAG AA (4.5:1 body text, 3:1 large text/UI
 - Font: `Inter`, fallback `-apple-system, "Segoe UI", Roboto, sans-serif` (system stack, zero extra load cost, matches "no heavy dependency" guideline).
 - Scale (desktop / mobile), weight:
   - H1 (Hero name): 48px / 34px, 700
+  - Subhead (Hero role/stack line only, §3): 20px / 18px, 500, `text-secondary` — named tokens `subhead-lg`/`subhead`. Same pixel size as H3 but a distinct token: different weight (500 vs. 600) and a different semantic role (lead paragraph under the Hero H1, not a heading), so it's never coupled to H3 just because the sizes coincide.
   - H2 (section heading): 32px / 24px, 700
   - H3 (card/role/category title): 20px / 18px, 600
   - Body: 16px / 16px, 400, line-height 1.6
@@ -109,7 +114,9 @@ All text/background pairs above meet WCAG AA (4.5:1 body text, 3:1 large text/UI
 
 **Interactions:** Click/tap a link → smooth scroll to that section, menu closes if open. Click Download Resume → same behavior as Hero's button (see §3 States). Keyboard: full tab order through wordmark → links → button; Escape closes mobile overlay and returns focus to the hamburger button.
 
-**Accessibility:** `<nav aria-label="Section">`; current section indicated with `aria-current="true"` on its link (not color alone); hamburger button has `aria-expanded`/`aria-controls`; overlay menu traps focus while open; all tap targets ≥44×44px.
+**Accessibility:** `<nav aria-label="Section">`; current section indicated with `aria-current="true"` on its link (not color alone); hamburger button has `aria-expanded`/`aria-controls`; overlay menu traps focus while open.
+
+Tap targets (amended 2026-10-15, see revision note below): every discrete button-style target — wordmark, hamburger, mobile overlay links, Download Resume button (both nav and compact variants) — stays at ≥44×44px (WCAG 2.2 SC 2.5.5, AAA, exceeds the AA floor since there's no layout cost to doing so). The 7 inline desktop/tablet jump links are the one exception: they hold the WCAG 2.2 SC 2.5.8 AA minimum instead — 44px tall (unchanged) but width is whatever the label needs, justified by the **Spacing** exception (not the "inline" exception — a nav bar of discrete links isn't text-in-a-sentence). This is conditional: the horizontal gap between adjacent links must be wide enough that a 24px-diameter circle centered on each target doesn't overlap its neighbor's. If that measurement ever fails (e.g. a future copy change shortens the gap), this reopens and the links need either more spacing or a layout change.
 
 **Open questions:** None — decision #2 (sticky nav) confirmed by Sandro on 2026-10-14.
 
@@ -128,7 +135,7 @@ All text/background pairs above meet WCAG AA (4.5:1 body text, 3:1 large text/UI
 
 **Components**
 - H1: name — "Sandro Mendoza"
-- Subheading (body-large, 20px/18px, text-secondary): role/stack line — "Backend Developer · Kotlin & Spring Boot"
+- Subheading (`subhead-lg`/`subhead` token, 20px/18px, `text-secondary` — see §1 type scale): role/stack line — "Backend Developer · Kotlin & Spring Boot"
   - *Note:* the approved headline string is "Sandro Mendoza — Backend Developer · Kotlin & Spring Boot." I split it at the em dash into H1 (name) + subheading (role) for visual hierarchy — same approved words, no new copy added.
 - Button/Primary: "Download Resume" with a download icon, links to `/resume/Sandro-Mendoza-Resume.pdf` (per Dragon's architecture — static asset, `download` attribute set, opens/downloads directly, no backend call).
 - Inline fallback message (hidden by default, see States).
