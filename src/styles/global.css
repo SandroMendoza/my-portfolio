@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Shared design tokens (colors, type scale, spacing) land in tailwind.config.ts
+   under theme.extend, per KC's approved design-token system (ticket MP-1).
+   Keep section-specific styling in Tailwind utility classes on components —
+   see docs/architecture/rules.md. */
