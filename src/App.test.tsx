@@ -19,4 +19,11 @@ describe("App", () => {
     expect(h1s).toHaveLength(1);
     expect(h1s[0]).toHaveTextContent("Sandro Mendoza");
   });
+
+  it("renders the Skills section", () => {
+    render(<App />);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Skills" }),
+    ).toBeInTheDocument();
+  });
 });

@@ -17,7 +17,23 @@ export const resumeContent: ResumeContent = {
   about: {
     body: "",
   },
-  skills: [],
+  // Skills (MP-5): exact verbatim categories/items from the Product
+  // Overview (design/screen-specs.md §5 "Copy (exact, verbatim)"). Order
+  // matters — matches the approved copy and the Jira AC order.
+  skills: [
+    { category: "Backend", items: ["Kotlin", "Spring Boot", "Java", "REST APIs"] },
+    {
+      category: "Architecture",
+      items: [
+        "Hexagonal Architecture",
+        "Domain-Driven Design (DDD)",
+        "Clean Architecture",
+      ],
+    },
+    { category: "Testing", items: ["JUnit5", "MockK", "Parameterized Testing"] },
+    { category: "Data", items: ["MySQL", "MongoDB", "SQL"] },
+    { category: "Tools", items: ["Git", "Gradle", "Apache PDFBox", "Docker"] },
+  ],
   experience: [],
   projects: [],
   otherExperience: [],
