@@ -6,9 +6,13 @@ on:
   push:
     branches: [development, main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
-    name: Build & test
+    name: Build, lint & test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,12 +21,37 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run lint
       - run: npm run test
       - run: npm run build
 
+  security-scan:
+    name: Security scan (deps & secrets)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # Scoped to production dependencies: react/react-dom only. Dev-tooling
+      # (vite/vitest/tailwind/wrangler toolchains) currently carries known
+      # advisories that only a breaking major-version bump fixes — tracked
+      # as a backlog item with Dragon rather than silently force-upgraded,
+      # since none of it ships in the built static bundle.
+      - name: Dependency audit (production deps)
+        run: npm audit --omit=dev --audit-level=high
+      - name: Secret scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --results=verified,unknown
+
   deploy-development:
     name: Deploy (development)
-    needs: build-and-test
+    needs: [build-and-test, security-scan]
     if: github.event_name == 'push' && github.ref == 'refs/heads/development'
     runs-on: ubuntu-latest
     steps:
@@ -36,11 +65,12 @@ jobs:
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --env development
 
   deploy-production:
     name: Deploy (production)
-    needs: build-and-test
+    needs: [build-and-test, security-scan]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -54,4 +84,5 @@ jobs:
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --env production
