@@ -51,19 +51,31 @@ npx wrangler rollback --env production --message "Rollback: <reason>" <deploymen
 ```
 (swap `production` for `development` as needed). This requires a local Cloudflare API token (ask Yuki, or run `wrangler login` if you have dashboard access).
 
-Alternative (preferred for anything but an emergency): revert the merge commit in git and let CI redeploy the previous version —
+Alternative (preferred for anything but an emergency): revert the merge commit in git and let CI redeploy the previous version. Both `main` and `development` are branch-protected (PR-only, no direct pushes), so this goes through a PR like any other change —
 ```
+git checkout -b revert/<short-reason>
 git revert -m 1 <merge-commit-sha>
-git push origin main   # or development
+git push -u origin revert/<short-reason>
+gh pr create --base main --head revert/<short-reason> --title "Revert: <short-reason>"
+# wait for the two required checks (Build, lint & test / Security scan) to pass, then
+gh pr merge --squash --delete-branch
 ```
-This keeps the deployed artifact and the git history in sync, which the rollback-via-Wrangler path doesn't.
+(target `development` instead of `main` for a dev-only rollback). This keeps the deployed artifact and the git history in sync, which the rollback-via-Wrangler path doesn't.
 
 ## Who to tell
 
 - Tell Sandro before rolling back production (it's user-facing).
 - No one else needs to be paged — this is a single-maintainer static site with no on-call rotation.
 
+## Branch protection
+
+Both `main` and `development` are protected (set up 2026-10-14, after Sandro chose to make the repo public to unlock this — GitHub's Free plan doesn't allow branch protection on a private repo):
+
+- Pull request required before merging (no direct pushes, including for admins — `enforce_admins` is on).
+- Two required status checks: `Build, lint & test` and `Security scan (deps & secrets)`.
+- No force pushes, no branch deletion.
+- No mandatory human-approval count (`required_approving_review_count: 0`) since this is a single-maintainer project — the required checks are the gate, not a second reviewer.
+
 ## Known gaps (tracked, not blocking)
 
-- **Branch protection** on `main`/`development` cannot be enabled on GitHub's Free plan for a *private* repository (classic protection and the newer rulesets API both return "Upgrade to GitHub Pro or make this repository public"). Options are: make the repo public, upgrade to GitHub Pro, or accept the risk for now and rely on PR-only process discipline. Raised to Sandro as an open question — see the Build-stage notes.
 - **Dev-dependency vulnerabilities**: `npm audit` currently reports advisories in the `vite`/`vitest`/`tailwindcss`/`wrangler` toolchains (dev-only, not shipped in the built bundle). Fixing them requires major-version upgrades (Vite 5→8, Vitest 2→5, Tailwind 3→4, Wrangler 3→4) that touch Dragon's accepted stack decisions (ADR 0002, ADR 0005) and Rose's existing Tailwind usage — flagged to Dragon as a backlog item rather than force-upgraded unilaterally.
