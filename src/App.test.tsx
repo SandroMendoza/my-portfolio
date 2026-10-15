@@ -26,4 +26,11 @@ describe("App", () => {
       screen.getByRole("heading", { level: 2, name: "About" }),
     ).toBeInTheDocument();
   });
+
+  it("renders the Skills section", () => {
+    render(<App />);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Skills" }),
+    ).toBeInTheDocument();
+  });
 });
