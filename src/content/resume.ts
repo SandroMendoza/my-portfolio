@@ -36,7 +36,27 @@ export const resumeContent: ResumeContent = {
     { category: "Data", items: ["MySQL", "MongoDB", "SQL"] },
     { category: "Tools", items: ["Git", "Gradle", "Apache PDFBox", "Docker"] },
   ],
-  experience: [],
+  // Experience (MP-6): exact verbatim role, meta line, and 8 bullets from
+  // the Product Overview (design/screen-specs.md §6 "Copy (exact,
+  // verbatim)"). One role only — the other past roles are Other Experience
+  // (MP-8), out of scope here.
+  experience: [
+    {
+      title: "Junior Software Web Developer I",
+      organization: "FFUF Manila",
+      dateRange: "Oct 2022–Present",
+      highlights: [
+        "Designed and implemented backend services using Kotlin and Spring Boot following Hexagonal Architecture.",
+        "Developed RESTful APIs supporting web and mobile applications.",
+        "Implemented domain-driven modules using aggregates, commands, and domain events.",
+        "Developed a document signing service that embeds digital signatures into PDF files using Apache PDFBox.",
+        "Implemented batch data synchronization jobs for importing legacy system data into domain entities.",
+        "Integrated external APIs for validation and document verification workflows.",
+        "Developed comprehensive unit and integration tests using JUnit5 and MockK.",
+        "Refactored legacy implementations into modular backend components for better maintainability.",
+      ],
+    },
+  ],
   projects: [],
   otherExperience: [],
   education: [],
