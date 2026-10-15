@@ -20,6 +20,13 @@ describe("App", () => {
     expect(h1s[0]).toHaveTextContent("Sandro Mendoza");
   });
 
+  it("renders the About section", () => {
+    render(<App />);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "About" }),
+    ).toBeInTheDocument();
+  });
+
   it("renders the Skills section", () => {
     render(<App />);
     expect(
