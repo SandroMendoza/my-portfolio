@@ -187,7 +187,16 @@ export function Nav() {
               icon={<DownloadIcon className="h-4 w-4" />}
               aria-label={RESUME_ARIA_LABEL}
             >
-              <span className="hidden lg:inline">Download Resume</span>
+              {/* MP-15: this label was the one text element in the nav that
+                  didn't get `whitespace-nowrap` during the MP-12 fix, so it
+                  wrapped to two lines right at the `lg` breakpoint (1024-
+                  1046px) before the row's full desktop spacing/sizing had
+                  room to breathe — same squeeze-zone mechanism as MP-12,
+                  just on this element. Every other nav text element already
+                  has this class; keep it that way if more are added. */}
+              <span className="hidden whitespace-nowrap lg:inline">
+                Download Resume
+              </span>
             </Button>
           </div>
 
