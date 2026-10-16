@@ -99,7 +99,31 @@ export const resumeContent: ResumeContent = {
       link: { kind: "description-only" },
     },
   ],
-  otherExperience: [],
+  // Other Experience (MP-8): exact verbatim title/company/dates from the
+  // Product Overview (design/screen-specs.md §8 "Copy (exact, verbatim)").
+  // Condensed only — no bullets, per the Should-have requirement.
+  otherExperience: [
+    {
+      title: "IT Staff / Customer Support Representative / QA & Audit",
+      organization: "DATAMODE",
+      dateRange: "Dec 2017–Oct 2022",
+    },
+    {
+      title: "Technical Support Representative (Chat Support)",
+      organization: "Transcom PH",
+      dateRange: "May–Jul 2017",
+    },
+    {
+      title: "Technical Support Representative",
+      organization: "SYKES INC.",
+      dateRange: "Jul–Dec 2016",
+    },
+    {
+      title: "Technical Support Staff",
+      organization: "Puregold Pricelub Inc.",
+      dateRange: "Feb 2015–Jun 2016",
+    },
+  ],
   education: [],
   // Filled in now (MP-3) rather than waiting for the Contact ticket (MP-10):
   // Hero's resume-fallback message also needs this same approved address
