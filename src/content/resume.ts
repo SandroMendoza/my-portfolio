@@ -57,7 +57,48 @@ export const resumeContent: ResumeContent = {
       ],
     },
   ],
-  projects: [],
+  // Projects (MP-7): exact verbatim descriptions from the Product Overview
+  // (design/screen-specs.md §7 "Copy (exact, verbatim)"). KC Art Gallery is
+  // always first (spec: "it's the one visitors can actually click through
+  // and verify"). The trailing "(No public link — private work project.)"
+  // parenthetical is NOT stored here — it's fixed UI boilerplate tied to
+  // `link.kind === "description-only"`, not unique approved copy that
+  // varies per project (same classification as Contact's "Copied!"
+  // microcopy), so Projects.tsx renders it directly rather than duplicating
+  // the identical string on every description-only entry.
+  projects: [
+    {
+      name: "KC Art Gallery",
+      description:
+        "A Next.js art gallery web app built with React, Tailwind CSS, and Prisma ORM.",
+      techStack: ["Next.js", "React", "Tailwind CSS", "Prisma ORM"],
+      link: {
+        kind: "linked",
+        href: "https://github.com/SandroMendoza/kc-art-gallery",
+      },
+    },
+    {
+      name: "Document Signing Service",
+      organization: "FFUF Manila",
+      description:
+        "Backend service embedding digital signatures into PDF files using Apache PDFBox, built with Kotlin/Spring Boot on Hexagonal Architecture.",
+      techStack: [
+        "Kotlin",
+        "Spring Boot",
+        "Hexagonal Architecture",
+        "Apache PDFBox",
+      ],
+      link: { kind: "description-only" },
+    },
+    {
+      name: "Legacy Data Synchronization",
+      organization: "FFUF Manila",
+      description:
+        "Batch jobs importing legacy system data into domain entities, plus external API integrations for validation and document verification.",
+      techStack: ["Kotlin", "Spring Boot", "Hexagonal Architecture"],
+      link: { kind: "description-only" },
+    },
+  ],
   otherExperience: [],
   education: [],
   // Filled in now (MP-3) rather than waiting for the Contact ticket (MP-10):

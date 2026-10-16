@@ -34,6 +34,12 @@ export type ProjectLink =
 
 export interface ProjectEntry {
   name: string;
+  // Added in MP-7: spec §7's card anatomy calls for a "Meta line ...
+  // company, for the two FFUF projects only (KC Art Gallery has none)" —
+  // this field wasn't in the original scaffolded shape. Optional since KC
+  // Art Gallery (a personal project) genuinely has none; components render
+  // the meta line only when it's present.
+  organization?: string;
   description: string;
   techStack: string[];
   link: ProjectLink;
