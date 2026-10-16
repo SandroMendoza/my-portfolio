@@ -148,5 +148,20 @@ describe("Nav", () => {
       expect(resumeLinks[0]).not.toHaveClass("min-h-[44px]");
       expect(resumeLinks[0]).not.toHaveClass("px-4");
     });
+
+    // MP-15: the compact button's label was the one nav text element that
+    // didn't get whitespace-nowrap in the original MP-12 pass, so it wrapped
+    // to two lines at 1024-1046px (confirmed live by Potchie via
+    // Range.getClientRects()). This asserts the class is present on both
+    // the inline-bar and mobile-overlay instances of the label, so it can't
+    // regress silently again.
+    it("the compact Download Resume button's label never wraps (MP-15)", () => {
+      render(<Nav />);
+      const resumeLinks = screen.getAllByRole("link", {
+        name: "Download Sandro Mendoza's resume (PDF)",
+      });
+      const inlineLabel = resumeLinks[0].querySelector("span");
+      expect(inlineLabel).toHaveClass("whitespace-nowrap");
+    });
   });
 });
